@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name ="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="C-UA-Compatible" content="ie=edge">
+<title>Maps</title>    
+<style>
+    h1 {
+        font-family:Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size:50px;
+    color:whitesmoke;
+    }
+    
+    body {
+        background-image: url("https://maxcdn.icons8.com/app/uploads/2018/08/how-to-create-gradient-article.jpg");
+    background-size:cover;
+    background-position:center;
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    #map{
+        height: 700px;
+        width: 100%;
+    }
+</style>
+
+</head>
+
+    
+    
+    
+    
+<body>
+<h1>Event Map</h1>
+<div id = "map"></div>
+<script> 
+
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
+
+var getDistance = function(p1, p2) {
+  var R = 6378137; // Earth’s mean radius in meter
+  var dLat = rad(p2.lat - p1.lat);
+  var dLong = rad(p2.lng - p1.lng);
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
+    Math.sin(dLong / 2) * Math.sin(dLong / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d; // returns the distance in meter
+};   
+    
+var map, infoWindow;
+var markers = [
+    {
+        coords:{lat: 43.473396, lng:-80.527858}, 
+        amount:5,
+        content:'<p><b>Jim The Juggler</b></p><p><b>Event Description:  </b>Jim, an extremeley talented juggler is going to be juggling with the most unexpected things, such as laptops, backpacks and other things. </p><p><b>Tokens Offered: </b> 5 </p><p><b>Max Capacity: </b> 50</p><p><b>Current Attendees: </b> 31 </p><p><br></p>'
+    },
+    {
+        coords:{lat:43.46514230589346, lng:-80.53352952461866}, 
+        amount:8,
+        content:'<p><b>Shelly the Singer</b></p><p><b>Event Description:  </b>Shelly, an aspiring singer is going to be performing her new album for the public. </p><p><b>Tokens Offered: </b> 8 </p><p><b>Max Capacity: </b> 60</p><p><b>Current Attendees: </b> 44 </p><p><br></p>'
+    },
+    {
+        coords:{lat:43.473121, lng:-80.541238}, 
+        amount:4,
+        content:'<p><b>Drake Da Drummer</b></p><p> <b>Event Description: </b> Drake, who is a Waterloo student is going to be drumming in Engineering 7 building with twigs instead of drumsticks. </p><p><b>Tokens Offered: </b> 4 </p><p><b>Max Capacity: </b> 40 </p><p><b>Current Attendees: </b> 27 </p><p><br></p>'
+    },
+    {
+        coords:{lat:43.470476, lng:-80.515728}, 
+        amount:7,
+        content:'<p><b>Ramone the Rapper</b></p><p> <b>Event Description: </b> Ramone, a local rapper is giving the audience a sneak peek at his upcoming mixtape. </p><p><b>Tokens Offered: </b> 7 </p><p><b>Max Capacity: </b> 30 </p><p><b>Current Attendees: </b> 17</p><p><br></p>'
+    },
+    {
+        coords:{lat:43.456551, lng:-80.511617}, 
+        amount:2,
+        content:'<p><b>Charlie the Comedian </b></p><p> <b>Event Description: </b> Charlie, a famous stand-up comedian is bringing his acts to the city hospital to perform for the patients and staff </p><p><b>Tokens Offered: </b> 2 </p><p><b>Max Capacity: </b> 80 </p><p><b>Current Attendees: </b> 64 </p><p><br></p>'
+    }
+];
+var posUserOutside = {
+    lat:0, lng:0
+};
+    
+function initMap(){
+    
+    var options = {
+        zoom:15,
+        center:{lat: 43.463730, lng:-80.525726} // change this to our current location
+    }
+map = new google.maps.Map(document.getElementById('map'), options);
+    
+infoWindow = new google.maps.InfoWindow;
+      
+    if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var posUser = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            
+            var markerMyPos = new google.maps.Marker({
+            position:posUser,
+            map:map
+            //icon:props.iconImage
+            })  
+            markerMyPos.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle.png');
+              
+            
+            
+             
+              
+        for (var i=0; i<markers.length; i++){
+                    var latt = markers[i].coords.lat;
+                    var lngg = markers[i].coords.lng;
+                    var coordss = markers[i].coords;
+           
+                   if ((getDistance(coordss, posUser)) < 300){
+                       var targetEvent = markers[i].content;
+                        var x = markers[i].amount;
+                        var infoWindow3 = new google.maps.InfoWindow({
+                        content:'You made it to: ' + targetEvent + x + ' tokens have been transferred into your account!'
+                         }); 
+                       break;
+                        //document.write('You made it to: ' + targetEvent + '! ' + x + ' tokens have been transferred into your account!');
+                    }
+             
+            else{
+                var infoWindow3 = new google.maps.InfoWindow({
+                        content:'You have not made it to an event yet.'
+                        }); 
+            }
+            
+            
+    
+        }
+       // document.write(getDistance(coordss, posUser));
+              
+        markerMyPos.addListener('click', function(){
+               infoWindow3.open(map, markerMyPos);
+            });
+
+         //   infoWindow.setPosition(posUser);
+            // infoWindow.setIcon('');
+           // infoWindow.setContent('Your location.');
+           // infoWindow.open(map);
+    
+            map.setCenter(posUser);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+    
+    
+
+//adding marker testing
+
+
+for(var i=0; i<markers.length; i++){
+    addMarker(markers[i]);
+    
+}
+
+//add marker
+    
+    function addMarker(props){
+        var marker = new google.maps.Marker({
+            position:props.coords,
+            map:map
+            //icon:props.iconImage
+        })
+        // changing marker depending on token value
+        if(props.amount == 1){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon0.png');
+        }
+        else if(props.amount == 2){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon1.png');
+        }
+        else if(props.amount == 3){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon10.png');
+        }
+        else if(props.amount == 4){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon11.png');
+        }
+        else if(props.amount == 5){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon12.png');
+        }
+        else if(props.amount == 6){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon13.png');
+        }
+        else if(props.amount == 7){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon14.png');
+        }
+        else if(props.amount == 8){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon15.png');
+        }
+        else if(props.amount == 9){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon16.png');
+        }
+        else if(props.amount == 10){ marker.setIcon('http://maps.google.com/mapfiles/kml/pal3/icon17.png');
+        }
+        
+        
+        if (props.content){
+           var infoWindow = new google.maps.InfoWindow({
+           content:props.content
+        }); 
+          /* var infoWindow2 = new google.maps.InfoWindow({
+           content: 'You made it!'
+        }); */
+            
+        marker.addListener('click', function(){
+               infoWindow.open(map, marker);
+            });
+         /*   
+        if ((props.coords.lat < (posUser.lat + 0.000900)) && (props.coords.lat > (posUser.lat - 0.000900))){
+                   if ((props.coords.lng < (posUser.lng + 0.000900)) && (props.coords.lng > (posUser.lng - 0.000900))){
+                       infoWindow2.open(map, marker);
+                   }
+        }
+        */
+            
+        }
+
+        
+    }
+  
+    function handleLocationError(browserHasGeolocation, infoWindow, posUser) {
+        infoWindow.setPosition(posUser);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+    
+  
+}
+/*
+for (var i=0; i<markers.length; i++){
+    var latt = markers[i].coords.lat;
+    var lngg = markers[i].coords.lng;
+    if ((latt < (posUserOutside.lat + 0.000900)) && (latt > (posUserOutside.lat - 0.000900))){
+                   if ((lngg < (posUserOutside.lng + 0.000900)) && (lngg > (posUserOutside.lng - 0.000900))){
+                       var targetEvent = markers[i].content;
+                        var x = markers[i].amount;
+                        document.write('You made it to: ' + targetEvent + '! ' + x + ' tokens have been transferred into your account!');
+                   }
+    }
+    
+}
+*/
+
+ 
+      
+
+    
+    
+    
+  
+
+    
+    
+    </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtwHBSNJxKCvlcAuwpLAMSJJbGwNfJQSc&callback=initMap">
+</script>    
+
+    
+        
+</body>
+</html>
+
+

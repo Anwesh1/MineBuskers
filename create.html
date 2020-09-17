@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    background-image: url("https://maxcdn.icons8.com/app/uploads/2018/08/how-to-create-gradient-article.jpg");
+    background-size:cover;
+    background-position:center;
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    }
+
+a:link, a:visited  {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 30px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+   background-color: #45a049;
+}
+    
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=Ping]{
+  background-color: #4CAF50;
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=Ping]:hover {
+  background-color: #45a049;
+}
+      
+.Topic {
+   font-size: 50px;
+    padding: 10px;
+    margin-bottom: 45px;
+}
+    
+    
+</style>
+</head>
+<body>
+
+<div class="Topic" align= "center"><b style= "color: white;">CREATE YOUR EVENT</b></div>
+
+<div class="container">
+  <form action="/action_page.php">
+    <label for="name"><b style= "color: white;">Name of the event</b></label>
+    <input type="text" id="name" name="name" placeholder= "Name...">
+    <label for="location"><b style= "color: white;">Location of the event</b></label><br>
+    <a href="default.asp" target="_blank">Select Location</a><br>
+
+    <label for="reward"><b style= "color: white;">Reward token</b></label>
+    <select id="reward" name="reward">
+      <option value="1tk">1 token</option>
+      <option value="2tk">2 tokens</option>
+      <option value="3tk">3 tokens</option>
+      <option value="4tk">4 tokens</option>
+      <option value="5tk">5 tokens</option>
+      <option value="6tk">6 tokens</option>
+      <option value="7tk">7 tokens</option>
+      <option value="8tk">8 tokens</option>
+      <option value="9tk">9 tokens</option>
+      <option value="10tk">10 tokens</option>
+    </select>
+      
+    <label for="location"><b style= "color: white;">Event Capacity</b></label>
+    <input type="text" id="location" name="location" placeholder= "Capacity...">
+
+    <label for="subject"><b style= "color: white;">Description of the event</b></label>
+    <textarea id="subject" name="subject" placeholder="What will you be doing at the event..." style="height:200px"></textarea>
+
+   <a href="default.asp" target="_blank">Ping Event!</a><br>
+  </form>
+</div>
+
+</body>
+</html>
